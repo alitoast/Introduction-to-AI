@@ -20,37 +20,28 @@ This project extends Pacman AI by implementing multi-agent search algorithms to 
 ### 3. **Alpha-Beta Pruning**
 
 * Extended the minimax agent to use **alpha-beta pruning**, improving efficiency by pruning branches that cannot influence the final decision.
-* Maintained correctness while significantly reducing the search tree size and improving runtime performance.
+
 
 ### 4. **Expectimax Agent**
 
 * Developed an **Expectimax agent** modeling ghosts as stochastic agents that choose their moves uniformly at random.
-* Expected value calculations replace minimax’s worst-case assumptions, better modeling uncertain ghost behavior.
+
 
 ### 5. **Better Evaluation Function**
 
-* Designed a comprehensive evaluation function that combines:
+This evaluation function is designed to guide Pacman toward aggressive yet safe play. It encourages Pacman to quickly collect food, opportunistically chase scared ghosts, and avoid dangerous encounters.
+It considers multiple aspects of the current game state to compute a heuristic score:
 
-  * Distance to the closest food pellet.
-  * Active ghost avoidance (heavy penalties for close active ghosts).
-  * Opportunity to chase scared ghosts.
-  * Remaining food and capsule counts.
-* This heuristic encourages survival, effective food collection, and strategic use of power capsules.
+* **Game Outcome:** Rewards winning states and heavily penalizes losing ones.
+* **Ghost Awareness:**
 
----
+  * Strongly penalizes being adjacent to active (non-scared) ghosts.
+  * Rewards chasing scared ghosts, with preference for closer ones.
+* **Food Prioritization:**
 
-## Why These Changes?
+  * Encourages moving toward the nearest food pellet.
+  * Penalizes the total number of remaining food dots.
+* **Capsule Strategy:**
 
-* **Handling multiple agents:** Realistic Pacman gameplay involves several adversaries (ghosts). The multi-agent search algorithms model these interactions explicitly.
-* **Efficiency:** Alpha-beta pruning ensures the search remains computationally feasible at greater depths.
-* **Uncertainty:** Expectimax accounts for randomness in ghost movements, better reflecting actual game dynamics.
-* **Balanced decision-making:** The better evaluation function guides Pacman to balance between collecting food and avoiding danger.
-
----
-
-## How to Use
-
-* Run each agent by specifying the agent type in the command line (e.g., `-p MinimaxAgent`, `-p AlphaBetaAgent`, `-p ExpectimaxAgent`).
-* Adjust search depth and evaluation functions via command line arguments or configuration settings.
-* Use flags like `-f` for fixed random seeds or `-q` to disable graphics and speed up simulations.
-
+  * Penalizes the number of remaining power capsules to encourage collecting them.
+* **Game Score:** Includes the actual game score as part of the evaluation.
