@@ -2,54 +2,42 @@
 
 This project implements a **Value Iteration Agent** for solving Markov Decision Processes (MDPs) using the value iteration algorithm. The goal is to compute optimal policies for different environments such as Gridworld.
 
-This README describes the changes made in:
-- `valueIterationAgents.py` (Task 1)
-- `analysis.py` (Tasks 2 & 3)
-
 ---
 
 ## Task 1: Value Iteration Implementation
 
-**File Modified**: `valueIterationAgents.py`
-
-**Class Implemented**: `ValueIterationAgent`
-
-### ✅ Changes Made
+Changes Made in `ValueIterationAgent`:
 
 #### 1. Value Iteration Loop (`__init__`)
-- Implemented a batch-style value iteration loop.
-- For each iteration:
-  - Copied previous values.
-  - For each state, computed the max Q-value from all legal actions.
-  - Updated state values using those max Q-values.
-- Handled terminal states by skipping value updates.
+* Implemented a batch-style value iteration loop.
+* For each (k) iteration:
+  * Created a new Counter (`new_values`) to hold updated state values.
+  * For each state:
+    * Skipped terminal states (no future rewards to consider).
+    * Computed Q-values for all legal actions.
+    * Set the state’s new value to the maximum Q-value.
+* Replaced `self.values` with `new_values` after processing all states.
 
 #### 2. `computeQValueFromValues(state, action)`
-- Computed Q(s, a) using:
-  
-```
-Q(s,a) = Σ \[P(s'|s,a) \* (R(s,a,s') + γ \* V(s'))]
-
-```
-
-- Used the transition model and rewards provided by the MDP.
+* Implemented the Bellman Q-value computation
+* For the given state and action:
+  * Iterated over all possible (nextState, probability) pairs.
+  * Calculated the expected return using current value estimates (self.values).
+  * Summed these to produce the Q-value.
 
 #### 3. `computeActionFromValues(state)`
-- Returned the action that yielded the maximum Q-value from the current state's value.
-- Returned `None` for terminal states.
+* Returned the action with the highest Q-value for the given state, based on current value estimates (`self.values`).
+* Iterated through all legal actions, computed each action's Q-value using `computeQValueFromValues`, and selected the best.
+* Returned None if the state is terminal (i.e. no legal actions available).
 
 ###  Reason
-To compute an optimal value function and policy using the Bellman update. Implementing this agent demonstrates the core planning loop in reinforcement learning.
+Compute the optimal value function and policy for a known MDP using value iteration, which applies the Bellman update iteratively. This agent is an example of offline planning in reinforcement learning, where the agent uses a known model of the environment (transition probabilities and rewards) to derive the best policy without interacting with the environment.
 
 ---
 
 ## Task 2: Bridge Crossing Analysis
 
-**File Modified**: `analysis.py`
-
-**Function Implemented**: `question2()`
-
-###  Parameter Chosen
+##  Parameter Chosen
 ```python
 answerDiscount = 0.9
 answerNoise = 0.0
@@ -64,8 +52,6 @@ answerNoise = 0.0
 ---
 
 ## Task 3: DiscountGrid Behavior Tuning
-
-**File Modified**: `analysis.py`
 
 ###  Functions Implemented
 
