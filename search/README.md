@@ -1,4 +1,4 @@
-# Overview
+## Overview
 
 This project demonstrates how different uninformed search algorithms can be used by Pacman to navigate a maze and find a fixed food dot. The algorithms implemented include:
 
